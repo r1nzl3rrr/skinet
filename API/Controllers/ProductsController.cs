@@ -18,7 +18,8 @@ namespace API.Controllers
         private readonly IGenericRepository<ProductType> _productsTypeRepo;
         private readonly IMapper _mapper;
 
-        public ProductsController(IGenericRepository<Product> productsRepo, IGenericRepository<ProductBrand> productsBrandRepo, IGenericRepository<ProductType> productsTypeRepo, IMapper mapper)
+        public ProductsController(IGenericRepository<Product> productsRepo, IGenericRepository<ProductBrand> productsBrandRepo,
+            IGenericRepository<ProductType> productsTypeRepo, IMapper mapper)
         {
             
             _productsRepo = productsRepo;

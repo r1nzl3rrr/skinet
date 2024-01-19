@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -39,6 +40,23 @@ namespace Infrastructure.Data
                 context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ProductTypes ON");
                 await context.SaveChangesAsync();
                 context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ProductTypes OFF");
+                transaction.Commit();
+            }
+
+            if (!context.DeliveryMethods.Any())
+            {
+                using var transaction = context.Database.BeginTransaction();
+                var deliveryData = File.ReadAllText("../Infrastructure/Data/SeedData/delivery.json");
+                var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+
+                foreach (var method in methods)
+                {
+                    context.DeliveryMethods.Add(method);
+                }
+
+                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryMethods ON");
+                await context.SaveChangesAsync();
+                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryMethods OFF");
                 transaction.Commit();
             }
 

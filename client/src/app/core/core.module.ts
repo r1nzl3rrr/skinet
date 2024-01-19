@@ -12,9 +12,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { SharedModule } from '../shared/shared.module';
 
 
-
-
-
 @NgModule({
   declarations: [
     NavBarComponent,

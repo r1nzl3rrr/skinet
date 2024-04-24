@@ -1,30 +1,29 @@
 import { Address } from "./user"
-import { DeliveryMethod } from './deliveryMethod';
 
 export interface OrderToCreate {
-    basketId: string;
-    deliveryMethodId: number;
-    shipToAddress: Address;
+  basketId: string;
+  deliveryMethodId: number;
+  shipToAddress: Address;
 }
 
 export interface Order {
-    id: number
-    buyerEmail: string
-    orderDate: string
-    shipToAddress: Address
-    deliveryMethod: string
-    shippingPrice: number
-    orderItems: OrderItem[]
-    subtotal: number
-    total: number
-    status: string
-    paymentIntentId: any
-  }
+  id: number
+  buyerEmail: string
+  orderDate: string
+  shipToAddress: Address
+  deliveryMethod: string
+  shippingPrice: number
+  orderItems: OrderItem[]
+  subtotal: number
+  total: number
+  status: string
+  paymentIntentId: any
+}
   
-  export interface OrderItem {
-    productId: number
-    productName: string
-    pictureUrl: string
-    price: number
-    quantity: number
-  }
+export interface OrderItem {  
+  productId: number
+  productName: string
+  pictureUrl: string
+  price: number
+  quantity: number
+}

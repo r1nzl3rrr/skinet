@@ -1,0 +1,8 @@
+.list-group-item {
+    padding: 10px 20px;
+    font-size: 1.1em;
+
+    &:not(.active):hover{
+        color: dimgray
+    }
+}

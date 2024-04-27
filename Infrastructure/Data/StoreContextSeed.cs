@@ -1,7 +1,13 @@
-﻿using Core.Entities;
-using Core.Entities.OrderAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Core.Entities;
+using Core.Entities.OrderAggregate;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Data
 {
@@ -9,70 +15,59 @@ namespace Infrastructure.Data
     {
         public static async Task SeedAsync(StoreContext context)
         {
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
             if (!context.ProductBrands.Any())
             {
-
-                using var transaction = context.Database.BeginTransaction();
-                var brandsData = File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
-                var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData); ;
+                var brandsData = File.ReadAllText(path + @"/Data/SeedData/brands.json");
+                var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 
                 foreach (var item in brands)
                 {
                     context.ProductBrands.Add(item);
                 }
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ProductBrands ON");
-                await context.SaveChangesAsync();
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ProductBrands OFF");
-                transaction.Commit();
 
+                await context.SaveChangesAsync();
             }
 
             if (!context.ProductTypes.Any())
             {
-                using var transaction = context.Database.BeginTransaction();
-                var typesdata = File.ReadAllText("../Infrastructure/Data/SeedData/types.json");
-                var types = JsonSerializer.Deserialize<List<ProductType>>(typesdata);
+                var typesData = File.ReadAllText(path + @"/Data/SeedData/types.json");
+                var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
 
-                foreach (var type in types)
+                foreach (var item in types)
                 {
-                    context.ProductTypes.Add(type);
-                }
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ProductTypes ON");
-                await context.SaveChangesAsync();
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ProductTypes OFF");
-                transaction.Commit();
-            }
-
-            if (!context.DeliveryMethods.Any())
-            {
-                using var transaction = context.Database.BeginTransaction();
-                var deliveryData = File.ReadAllText("../Infrastructure/Data/SeedData/delivery.json");
-                var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
-
-                foreach (var method in methods)
-                {
-                    context.DeliveryMethods.Add(method);
+                    context.ProductTypes.Add(item);
                 }
 
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryMethods ON");
                 await context.SaveChangesAsync();
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryMethods OFF");
-                transaction.Commit();
             }
 
             if (!context.Products.Any())
             {
-                var productdata = File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
-                var products = JsonSerializer.Deserialize<List<Product>>(productdata);
+                var productsData = File.ReadAllText(path + @"/Data/SeedData/products.json");
+                var products = JsonSerializer.Deserialize<List<Product>>(productsData);
 
-                foreach (var pro in products)
+                foreach (var item in products)
                 {
-                    context.Products.Add(pro);
+                    context.Products.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.DeliveryMethods.Any())
+            {
+                var deliveryData = File.ReadAllText(path + @"/Data/SeedData/delivery.json");
+                var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+
+                foreach (var item in methods)
+                {
+                    context.DeliveryMethods.Add(item);
                 }
 
                 await context.SaveChangesAsync();
             }
         }
     }
-    
 }

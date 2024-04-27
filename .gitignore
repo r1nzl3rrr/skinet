@@ -475,4 +475,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
 /API/Properties/launchSettings.json
+/publish

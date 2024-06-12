@@ -16,7 +16,7 @@ import { AccountService } from 'src/app/account/account.service';
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>>
     {
         this.accountService.currentUser$.pipe(take(1)).subscribe({
-        next: user => this.token = user?.token
+            next: user => this.token = user?.token
         })
 
         if (this.token) {

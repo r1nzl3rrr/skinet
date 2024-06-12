@@ -16,6 +16,7 @@ namespace Infrastructure.Data
         public static async Task SeedAsync(StoreContext context)
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            await Console.Out.WriteLineAsync(path);
 
             if (!context.ProductBrands.Any())
             {
